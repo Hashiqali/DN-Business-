@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "203244352939",
+    "project_id": "detaildex-cf7a6",
+    "storage_bucket": "detaildex-cf7a6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:203244352939:android:4c3a49f017dbb3b3e70eee",
+        "android_client_info": {
+          "package_name": "com.slashi.detail_dex"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCggqLlO6UsaafQXUpioG2NTLEA-iPFbgk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
