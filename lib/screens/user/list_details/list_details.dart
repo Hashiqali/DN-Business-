@@ -1,9 +1,11 @@
-import 'package:detail_dex/screens/bloc/details_bloc.dart';
-import 'package:detail_dex/screens/home_screeen/home_screen.dart';
-import 'package:detail_dex/screens/list_details/functions.dart';
-import 'package:detail_dex/screens/list_details/list_tile.dart';
+import 'package:detail_dex/screens/user/bloc/details_bloc.dart';
+import 'package:detail_dex/screens/user/home_screeen/home_screen.dart';
+import 'package:detail_dex/screens/user/list_details/functions.dart';
+import 'package:detail_dex/screens/user/list_details/list_tile.dart';
+import 'package:detail_dex/widgets/loading_screen/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 
 final DetailsBloc homebloc = DetailsBloc();
 
@@ -47,19 +49,30 @@ class ListDetails extends StatelessWidget {
             return BlocBuilder<DetailsBloc, DetailsState>(
               bloc: homebloc,
               builder: (context, state) {
-                if (state is SearchedDetailsState) {
-                  return ListView.builder(
-                      padding: EdgeInsets.all(size.width / 40),
-                      itemCount: state.details.length,
-                      itemBuilder: (ctx, index) {
-                        final data = state.details[index];
+                if (state is LoadingWidgetState) {
+                  return const LoadingScreen();
+                } else if (state is SearchedDetailsState) {
+                  if (state.details.isEmpty) {
+                    return Center(
+                      child: Lottie.asset(
+                          height: size.width / 2.2,
+                          'assets/animation/no searched song animation.json'),
+                    );
+                  } else {
+                    return ListView.builder(
+                        padding: EdgeInsets.all(size.width / 40),
+                        itemCount: state.details.length,
+                        itemBuilder: (ctx, index) {
+                          final data = state.details[index];
 
-                        return listTile(
-                            issearch: true,
-                            size: size,
-                            data: data,
-                            context: context);
-                      });
+                          return listTile(
+                              bloc: homebloc,
+                              issearch: true,
+                              size: size,
+                              data: data,
+                              context: context);
+                        });
+                  }
                 }
                 return ListView.builder(
                     padding: EdgeInsets.all(size.width / 40),
@@ -68,6 +81,7 @@ class ListDetails extends StatelessWidget {
                       final data = details[index];
 
                       return listTile(
+                          bloc: homebloc,
                           size: size,
                           data: data,
                           context: context,

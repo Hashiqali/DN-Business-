@@ -1,6 +1,6 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:detail_dex/screens/user/bloc/details_bloc.dart';
 import 'package:detail_dex/widgets/snackbar_widget/snackbar.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +8,7 @@ Stream<List<Map<String, dynamic>>> getDetails() async* {
   try {
     final messagesSnapshot = FirebaseFirestore.instance
         .collection('Details')
-        .orderBy('name', descending: false)
+        .orderBy('createdAt', descending: true)
         .snapshots(includeMetadataChanges: true);
 
     await for (final messages in messagesSnapshot) {
@@ -26,9 +26,9 @@ Stream<List<Map<String, dynamic>>> getDetails() async* {
   }
 }
 
-deletedetails(String id, context) async {
+deletedetails(String id, context, DetailsBloc bloc) async {
   Navigator.pop(context);
-
+  bloc.add(LoadingWidgetEvent(context: context, id: id));
   final CollectionReference firedata =
       FirebaseFirestore.instance.collection('Details');
 

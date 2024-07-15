@@ -1,5 +1,5 @@
-import 'package:detail_dex/screens/bloc/details_bloc.dart';
-import 'package:detail_dex/screens/list_details/list_details.dart';
+import 'package:detail_dex/screens/user/bloc/details_bloc.dart';
+import 'package:detail_dex/screens/user/list_details/list_details.dart';
 import 'package:flutter/material.dart';
 
 FocusNode focusNodeSearch = FocusNode();
@@ -50,13 +50,16 @@ searchTile(
                         homebloc.add(AllDetails());
                         focusNodeSearch.unfocus();
                       }
+                      if (focusNodeSearch.hasFocus) {
+                        focusNodeSearch.unfocus();
+                      }
                     },
                   ),
                   filled: true,
                   fillColor: Colors.white,
-                  hintText: 'Search',
+                  hintText: 'Search Details',
                   hintStyle: const TextStyle(
-                    fontFamily: 'Kalliyath1',
+                    fontFamily: 'dex2',
                     color: Color.fromARGB(210, 158, 158, 158),
                   ),
                   border: OutlineInputBorder(

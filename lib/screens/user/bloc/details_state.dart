@@ -18,3 +18,17 @@ class SearchedDetailsState extends DetailsState {
 class AllDetailsState extends DetailsState {
   AllDetailsState();
 }
+
+class LoadingWidgetState extends DetailsState {}
+
+class NoNetwoekEventState extends DetailsState {
+  final bool istrue;
+
+  NoNetwoekEventState({required this.istrue});
+}
+
+class LoginLoadingEventState extends DetailsState {
+  final bool istrue;
+
+  LoginLoadingEventState({required this.istrue});
+}

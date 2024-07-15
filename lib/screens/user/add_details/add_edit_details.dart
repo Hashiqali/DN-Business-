@@ -1,5 +1,5 @@
-import 'package:detail_dex/screens/add_details/functions.dart';
-import 'package:detail_dex/screens/bloc/details_bloc.dart';
+import 'package:detail_dex/screens/user/add_details/functions.dart';
+import 'package:detail_dex/screens/user/bloc/details_bloc.dart';
 import 'package:detail_dex/widgets/pick_location/location_take.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -97,6 +97,7 @@ class _AddDetailsState extends State<AddDetails> {
                 border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.white))),
             controller: namecontroller,
+            keyboardType: TextInputType.text,
           ),
           SizedBox(
             height: size.height / 70,
@@ -140,6 +141,7 @@ class _AddDetailsState extends State<AddDetails> {
                 border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.white))),
             controller: phonecontroller,
+            keyboardType: TextInputType.number,
           ),
           SizedBox(
             height: size.height / 70,
@@ -170,7 +172,7 @@ class _AddDetailsState extends State<AddDetails> {
                 fontSize: size.width / 30,
               ),
             ),
-            keyboardType: TextInputType.multiline,
+            keyboardType: TextInputType.text,
             minLines: 5,
             maxLines: 8,
             controller: notecontroller,

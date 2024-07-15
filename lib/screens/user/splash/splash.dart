@@ -1,4 +1,7 @@
-import 'package:detail_dex/screens/home_screeen/home_screen.dart';
+import 'package:connectivity/connectivity.dart';
+import 'package:detail_dex/screens/user/home_screeen/home_screen.dart';
+import 'package:detail_dex/screens/login_screen/login_screen.dart';
+import 'package:detail_dex/widgets/no_network_widget/no_network_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
@@ -47,7 +50,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
   splashtime() async {
     await Future.delayed(const Duration(milliseconds: 5000));
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (ctx) => HomeScreen()));
+    final connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (ctx) => const NoNetworkWidget(
+                isSplash: true,
+              )));
+    } else {
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (ctx) => LoginScreen()));
+    }
   }
 }

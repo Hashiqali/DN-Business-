@@ -1,6 +1,8 @@
-import 'package:detail_dex/screens/add_details/add_edit_details.dart';
-import 'package:detail_dex/screens/list_details/list_details.dart';
-import 'package:detail_dex/screens/search/search.dart';
+import 'package:connectivity/connectivity.dart';
+import 'package:detail_dex/screens/user/add_details/add_edit_details.dart';
+import 'package:detail_dex/screens/user/list_details/list_details.dart';
+import 'package:detail_dex/screens/user/search/search.dart';
+import 'package:detail_dex/widgets/no_network_widget/no_network_widget.dart';
 import 'package:flutter/material.dart';
 
 List alldetails = [];
@@ -42,15 +44,23 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color.fromARGB(139, 158, 158, 158),
-        onPressed: () {
+        onPressed: () async {
           if (focusNodeSearch.hasFocus) {
             focusNodeSearch.unfocus();
           }
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (ctx) => const AddDetails(
-                    isedit: false,
-                    editdata: {},
-                  )));
+          final connectivityResult = await Connectivity().checkConnectivity();
+          if (connectivityResult == ConnectivityResult.none) {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (ctx) => const NoNetworkWidget(
+                      isSplash: false,
+                    )));
+          } else {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (ctx) => const AddDetails(
+                      isedit: false,
+                      editdata: {},
+                    )));
+          }
         },
         child: Icon(
           color: Colors.white,

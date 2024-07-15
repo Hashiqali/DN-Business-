@@ -30,10 +30,11 @@ environment:
 dependencies:
   animated_text_kit: ^4.2.0
   bloc: ^8.1.4
-  cloud_firestore: ^4.15.9
+  cloud_firestore: ^5.1.0
+  connectivity: ^3.0.6
   cupertino_icons: ^1.0.8
-  firebase_core: ^2.27.1
-  firebase_storage: ^11.6.10
+  firebase_core: ^3.2.0
+  firebase_storage: ^12.1.1
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.6
@@ -41,6 +42,7 @@ dependencies:
   flutter_map: ^6.1.0
   geolocator: 10.1.1
   latlong2: ^0.9.1
+  lottie: ^3.1.2
   open_street_map_search_and_pick: ^0.1.1
   permission_handler: ^11.3.1
   url_launcher: ^6.3.0
@@ -60,9 +62,9 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - assets/lotties/Animation - 1719553329058.json
-  #   - assets/lotties/Animation - 1719553419807.json
+  assets:
+    - assets/images/no-signal.png
+    - assets/animation/no searched song animation.json
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

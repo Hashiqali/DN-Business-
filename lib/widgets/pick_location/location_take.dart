@@ -1,5 +1,7 @@
-import 'package:detail_dex/screens/add_details/functions.dart';
-import 'package:detail_dex/screens/bloc/details_bloc.dart';
+import 'package:connectivity/connectivity.dart';
+import 'package:detail_dex/screens/user/add_details/functions.dart';
+import 'package:detail_dex/screens/user/bloc/details_bloc.dart';
+import 'package:detail_dex/widgets/no_network_widget/no_network_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 
@@ -13,6 +15,7 @@ class Location extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.black,
         body: OpenStreetMapSearchAndPick(
             buttonWidth: 130,
             zoomInIcon: Icons.zoom_in_sharp,
@@ -37,13 +40,22 @@ class Location extends StatelessWidget {
   }
 }
 
-void checkLocationPermission(double lat, double lng) async {
-  PermissionStatus locationStatus = await Permission.location.request();
-  if (locationStatus.isGranted) {
-    openGoogleMaps(lat, lng);
-  } else if (locationStatus.isDenied) {
-  } else if (locationStatus.isPermanentlyDenied) {
-    openAppSettings();
+void checkLocationPermission(
+    double lat, double lng, BuildContext context) async {
+  final connectivityResult = await Connectivity().checkConnectivity();
+  if (connectivityResult == ConnectivityResult.none) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (ctx) => const NoNetworkWidget(
+              isSplash: false,
+            )));
+  } else {
+    PermissionStatus locationStatus = await Permission.location.request();
+    if (locationStatus.isGranted) {
+      openGoogleMaps(lat, lng);
+    } else if (locationStatus.isDenied) {
+    } else if (locationStatus.isPermanentlyDenied) {
+      openAppSettings();
+    }
   }
 }
 

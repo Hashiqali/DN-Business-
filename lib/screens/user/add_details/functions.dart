@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:detail_dex/screens/bloc/details_bloc.dart';
+import 'package:detail_dex/screens/user/bloc/details_bloc.dart';
 import 'package:detail_dex/widgets/snackbar_widget/snackbar.dart';
 import 'package:flutter/material.dart';
 
@@ -20,6 +20,7 @@ submit(
   if (key.currentState!.validate() && location.isNotEmpty) {
     bloc.add(LoadingBuilder());
     final data = {
+      'createdAt': DateTime.now(),
       'name': namecontroller.text.trim(),
       'number': numbercontroller.text.trim(),
       'note': notecontroller.text.trim(),

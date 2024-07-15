@@ -1,4 +1,4 @@
-import 'package:detail_dex/screens/splash/splash.dart';
+import 'package:detail_dex/screens/user/splash/splash.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 

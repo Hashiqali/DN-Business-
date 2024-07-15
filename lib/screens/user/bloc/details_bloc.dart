@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
 part 'details_event.dart';
@@ -12,6 +13,9 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     on<LoadingBuilder>(loadingBuilder);
     on<SearchedDetails>(searchedDetails);
     on<AllDetails>(allDetails);
+    on<LoadingWidgetEvent>(loadingWidgetEvent);
+    on<NoNetwoekEvent>(noNetwoekEvent);
+    on<LoginLoadingEvent>(loginLoadingEvent);
   }
 
   FutureOr<void> locationBuilder(
@@ -31,5 +35,26 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
 
   FutureOr<void> allDetails(AllDetails event, Emitter<DetailsState> emit) {
     emit(AllDetailsState());
+  }
+
+  FutureOr<void> loadingWidgetEvent(
+      LoadingWidgetEvent event, Emitter<DetailsState> emit) async {
+    emit(LoadingWidgetState());
+    await Future.delayed(const Duration(seconds: 2));
+    emit(AllDetailsState());
+  }
+
+  FutureOr<void> noNetwoekEvent(
+      NoNetwoekEvent event, Emitter<DetailsState> emit) async {
+    emit(NoNetwoekEventState(istrue: true));
+    await Future.delayed(const Duration(seconds: 2));
+    emit(NoNetwoekEventState(istrue: false));
+  }
+
+  FutureOr<void> loginLoadingEvent(
+      LoginLoadingEvent event, Emitter<DetailsState> emit) async {
+    emit(LoginLoadingEventState(istrue: true));
+    await Future.delayed(const Duration(seconds: 2));
+    emit(LoginLoadingEventState(istrue: false));
   }
 }
