@@ -1,5 +1,6 @@
 import 'package:connectivity/connectivity.dart';
 import 'package:detail_dex/screens/user/add_details/add_edit_details.dart';
+import 'package:detail_dex/screens/user/drawer/drawer.dart';
 import 'package:detail_dex/screens/user/list_details/list_details.dart';
 import 'package:detail_dex/screens/user/search/search.dart';
 import 'package:detail_dex/widgets/no_network_widget/no_network_widget.dart';
@@ -15,8 +16,10 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      drawer: const DrawerWidget(),
       backgroundColor: Colors.black,
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
         centerTitle: true,
         title: Text(
           'Details',

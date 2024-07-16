@@ -1,5 +1,5 @@
 import 'package:detail_dex/screens/user/bloc/details_bloc.dart';
-import 'package:detail_dex/screens/user/home_screeen/home_screen.dart';
+import 'package:detail_dex/screens/user/home_screen/home_screen.dart';
 import 'package:detail_dex/screens/user/list_details/functions.dart';
 import 'package:detail_dex/screens/user/list_details/list_tile.dart';
 import 'package:detail_dex/widgets/loading_screen/loading_screen.dart';

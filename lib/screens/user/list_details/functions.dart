@@ -8,13 +8,13 @@ Stream<List<Map<String, dynamic>>> getDetails() async* {
   try {
     final messagesSnapshot = FirebaseFirestore.instance
         .collection('Details')
-        .orderBy('createdAt', descending: true)
+        .orderBy('datetime', descending: true)
         .snapshots(includeMetadataChanges: true);
 
     await for (final messages in messagesSnapshot) {
       final messagesList = messages.docs.map((e) {
         Map<String, dynamic> data = e.data();
-        data['id'] = e.id; // Add document ID to the data map
+        data['id'] = e.id;
         return data;
       }).toList();
 

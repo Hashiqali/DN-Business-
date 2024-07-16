@@ -62,13 +62,11 @@ listTile(
                             Marker(
                                 point: LatLng(data['location']['lat'],
                                     data['location']['long']),
-                                width: 60,
-                                height: 60,
                                 alignment: Alignment.center,
-                                child: const Icon(
+                                child: Icon(
                                   Icons.location_on,
-                                  size: 35,
-                                  color: Color.fromARGB(255, 255, 0, 0),
+                                  size: size.width / 12,
+                                  color: const Color.fromARGB(255, 255, 0, 0),
                                 ))
                           ])
                         ]),
@@ -82,7 +80,8 @@ listTile(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(top: 10, left: 10),
+                            padding: EdgeInsets.only(
+                                top: size.width / 60, left: size.width / 69),
                             child: SizedBox(
                               width: size.width / 2.3,
                               height: size.height / 36,
@@ -104,7 +103,8 @@ listTile(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(top: 5, left: 10),
+                            padding: EdgeInsets.only(
+                                top: size.width / 70, left: size.width / 69),
                             child: Text(
                               'Phone : ${data['number']}',
                               style: TextStyle(
@@ -120,7 +120,7 @@ listTile(
                 ),
                 if (!issearch)
                   Padding(
-                    padding: EdgeInsets.only(right: size.width / 98),
+                    padding: EdgeInsets.only(right: size.width / 100),
                     child: IconButton(
                         onPressed: () {
                           if (focusNodeSearch.hasFocus) {
@@ -128,7 +128,7 @@ listTile(
                           }
 
                           openBottomSheet(
-                              context, data['id'], data, size, bloc);
+                              context, data['id'], data, size, bloc, false);
                         },
                         icon: const Icon(Icons.more_vert_outlined)),
                   )

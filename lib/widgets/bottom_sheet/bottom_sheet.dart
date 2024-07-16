@@ -1,12 +1,14 @@
 import 'package:connectivity/connectivity.dart';
+import 'package:detail_dex/screens/admin/add_exicutives/add_exicutives.dart';
+import 'package:detail_dex/screens/admin/list_exicutives/functions.dart';
 import 'package:detail_dex/screens/user/add_details/add_edit_details.dart';
-import 'package:detail_dex/screens/user/bloc/details_bloc.dart';
+
 import 'package:detail_dex/screens/user/list_details/functions.dart';
 import 'package:detail_dex/widgets/no_network_widget/no_network_widget.dart';
 import 'package:flutter/material.dart';
 
 void openBottomSheet(BuildContext context, id, Map<String, dynamic> data, size,
-    DetailsBloc bloc) async {
+    bloc, bool isadmin) async {
   final connectivityResult = await Connectivity().checkConnectivity();
   if (connectivityResult == ConnectivityResult.none) {
     Navigator.of(context).push(MaterialPageRoute(
@@ -41,13 +43,23 @@ void openBottomSheet(BuildContext context, id, Map<String, dynamic> data, size,
                   ),
                   onTap: () {
                     Navigator.pop(context);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (ctx) => AddDetails(
-                                  editdata: data,
-                                  isedit: true,
-                                )));
+                    if (!isadmin) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (ctx) => AddDetails(
+                                    editdata: data,
+                                    isedit: true,
+                                  )));
+                    } else {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (ctx) => AddExicutivesPage(
+                                    isedit: true,
+                                    data: data,
+                                  )));
+                    }
                   },
                 ),
                 ListTile(
@@ -66,7 +78,11 @@ void openBottomSheet(BuildContext context, id, Map<String, dynamic> data, size,
                     ),
                     onTap: () {
                       alertDelete(
-                          context: context, size: size, id: id, bloc: bloc);
+                          context: context,
+                          size: size,
+                          id: id,
+                          bloc: bloc,
+                          isadmin: isadmin);
                     }),
                 ListTile(
                   leading: Icon(
@@ -95,7 +111,12 @@ void openBottomSheet(BuildContext context, id, Map<String, dynamic> data, size,
   }
 }
 
-alertDelete({required context, required size, required id, required bloc}) {
+alertDelete(
+    {required context,
+    required size,
+    required id,
+    required bloc,
+    required bool isadmin}) {
   return showDialog(
       context: context,
       builder: (ctx) {
@@ -115,7 +136,11 @@ alertDelete({required context, required size, required id, required bloc}) {
           actions: [
             TextButton(
                 onPressed: () {
-                  deletedetails(id, context, bloc);
+                  if (!isadmin) {
+                    deletedetails(id, context, bloc);
+                  } else {
+                    deleteExicutivedetails(id, context, bloc);
+                  }
                 },
                 child: Text(
                   'Yes',

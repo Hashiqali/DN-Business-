@@ -89,13 +89,8 @@ class LoginScreen extends StatelessWidget {
                       if (value == null || value.isEmpty) {
                         return 'Please Enter Password';
                       }
-
                       return null;
                     },
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(10),
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
                     decoration: InputDecoration(
                         focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white)),
@@ -109,7 +104,8 @@ class LoginScreen extends StatelessWidget {
                             borderRadius: BorderRadius.all(Radius.circular(5)),
                             borderSide: BorderSide(color: Colors.white))),
                     controller: passwordcontroller,
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
+                    obscureText: true,
                   ),
                   SizedBox(
                     height: size.height / 30,

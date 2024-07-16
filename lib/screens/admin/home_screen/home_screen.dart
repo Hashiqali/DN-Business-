@@ -1,7 +1,11 @@
+import 'package:detail_dex/screens/admin/add_exicutives/add_exicutives.dart';
+import 'package:detail_dex/screens/admin/list_exicutives/list_exicutives.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreenAdmin extends StatelessWidget {
-  const HomeScreenAdmin({super.key});
+  const HomeScreenAdmin({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -9,6 +13,12 @@ class HomeScreenAdmin extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.logout_outlined,
+              color: Colors.white,
+            )),
         centerTitle: true,
         title: Text(
           'Admin',
@@ -103,7 +113,68 @@ class HomeScreenAdmin extends StatelessWidget {
                 ],
               ),
             ),
-            
+            SizedBox(
+              height: size.width / 20,
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (ctx) => ListExicutives()));
+              },
+              child: Container(
+                height: size.height / 10,
+                width: size.width,
+                decoration: BoxDecoration(
+                    color: Colors.amber,
+                    borderRadius: BorderRadius.circular(5)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: size.width / 20),
+                      child: Text(
+                        'Executives',
+                        style: TextStyle(
+                          fontFamily: 'dexb',
+                          color: Colors.black,
+                          fontSize: size.width / 22,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: size.width / 20,
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (ctx) => AddExicutivesPage(
+                          isedit: false,
+                          data: {},
+                        )));
+              },
+              child: Container(
+                height: size.height / 15,
+                width: size.width,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5)),
+                child: Center(
+                  child: Text(
+                    'Add Executive',
+                    style: TextStyle(
+                      fontFamily: 'dexb',
+                      color: Colors.black,
+                      fontSize: size.width / 30,
+                    ),
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),

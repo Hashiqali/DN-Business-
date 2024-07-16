@@ -128,7 +128,7 @@ listTile(
                           }
 
                           openBottomSheet(
-                              context, data['id'], data, size, bloc);
+                              context, data['id'], data, size, bloc, false);
                         },
                         icon: const Icon(Icons.more_vert_outlined)),
                   )

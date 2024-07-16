@@ -188,17 +188,7 @@ class _AddDetailsState extends State<AddDetails> {
                   focusNode1.unfocus();
                   focusNode2.unfocus();
                   focusNode3.unfocus();
-                  PermissionStatus locationStatus =
-                      await Permission.location.request();
-                  if (locationStatus.isGranted) {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (ctx) => Location(
-                              bloc: bloc,
-                            )));
-                  } else if (locationStatus.isDenied) {
-                  } else if (locationStatus.isPermanentlyDenied) {
-                    openAppSettings();
-                  }
+                  locationPick(context: context, bloc: bloc);
                 },
                 child: Container(
                   height: size.height / 15,
