@@ -1,4 +1,4 @@
-import 'package:detail_dex/screens/admin/basis_picker_page/basis_page.dart';
+import 'package:detail_dex/screens/admin/admin_clientlist/admin_clientlist.dart';
 import 'package:detail_dex/screens/admin/bloc/admin_bloc.dart';
 import 'package:detail_dex/screens/admin/list_exicutives/functions.dart';
 import 'package:detail_dex/widgets/bottom_sheet/bottom_sheet.dart';
@@ -91,10 +91,11 @@ class ListExicutives extends StatelessWidget {
                                   ),
                                   child: ListTile(
                                     onTap: () {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (ctx) =>
-                                                  const BasisPage()));
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                              builder: (ctx) => AdminClientList(
+                                                    exicutive: data['id'],
+                                                  )));
                                     },
                                     leading: GestureDetector(
                                       onLongPress: () {
@@ -128,18 +129,30 @@ class ListExicutives extends StatelessWidget {
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),
-                                    trailing: CircleAvatar(
-                                        backgroundColor: Colors.green,
-                                        radius: size.width / 30,
-                                        child: Text(
-                                          '100',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: 'dexb',
-                                            fontSize: size.width / 34,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        )),
+                                    trailing: StreamBuilder(
+                                        stream: countTodayExicutiveClients(
+                                            data['id']),
+                                        builder: (context, snapshot) {
+                                          int count = 0;
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            count = 0;
+                                          } else {
+                                            count = snapshot.data ?? 0;
+                                          }
+                                          return CircleAvatar(
+                                              backgroundColor: Colors.green,
+                                              radius: size.width / 30,
+                                              child: Text(
+                                                '$count',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: 'dexb',
+                                                  fontSize: size.width / 34,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ));
+                                        }),
                                   )));
                         });
                   },

@@ -32,3 +32,9 @@ class LoginLoadingEventState extends DetailsState {
 
   LoginLoadingEventState({required this.istrue});
 }
+
+class FilteredDetailsState extends DetailsState {
+  final List details;
+
+  FilteredDetailsState({required this.details});
+}

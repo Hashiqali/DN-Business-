@@ -73,6 +73,20 @@ class ListDetails extends StatelessWidget {
                               context: context);
                         });
                   }
+                } else if (state is FilteredDetailsState) {
+                  return ListView.builder(
+                      padding: EdgeInsets.all(size.width / 40),
+                      itemCount: state.details.length,
+                      itemBuilder: (ctx, index) {
+                        final data = state.details[index];
+
+                        return listTile(
+                            bloc: homebloc,
+                            size: size,
+                            data: data,
+                            context: context,
+                            issearch: false);
+                      });
                 }
                 return ListView.builder(
                     padding: EdgeInsets.all(size.width / 40),

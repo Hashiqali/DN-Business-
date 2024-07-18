@@ -73,6 +73,26 @@ viewTileWidget(
               ),
             ),
           ),
+          Padding(
+            padding: EdgeInsets.only(bottom: size.width / 25),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.location_on_outlined,
+                  color: Colors.white,
+                  size: size.width / 20,
+                ),
+                Text(
+                  '${data['address']['suburb'] ?? data['address']['village'] ?? data['address']['town']}, ${data['address']['state_district']}, ${data['address']['state']}',
+                  style: TextStyle(
+                    fontFamily: 'dex2',
+                    color: Colors.white,
+                    fontSize: size.width / 30,
+                  ),
+                ),
+              ],
+            ),
+          ),
           TextFormField(
             autovalidateMode: AutovalidateMode.onUserInteraction,
             style: TextStyle(

@@ -35,3 +35,9 @@ class LoginLoadingEvent extends DetailsEvent {
   LoginLoadingEvent({required this.istrue});
 
 }
+
+class FilteredDetails extends DetailsEvent {
+  final List details;
+
+  FilteredDetails({required this.details});
+}

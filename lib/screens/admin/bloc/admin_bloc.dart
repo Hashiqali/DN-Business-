@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:detail_dex/screens/admin/admin_clientlist/functions.dart';
 import 'package:meta/meta.dart';
 
 part 'admin_event.dart';
@@ -11,6 +12,9 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     on<AddExicutiveLoading>(addExicutiveLoadingState);
     on<AdminNoNetworkEvent>(adminNoNetworkEvent);
     on<AdminDeleteLoading>(adminDeleteLoading);
+    on<AdminTabChanger>(adminTabChanger);
+    on<FilterDatas>(filterDatas);
+    on<ClearDetails>(clearDetails);
   }
 
   FutureOr<void> addExicutiveLoadingState(
@@ -32,5 +36,20 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     emit(AdminDeleteLoadingState());
     await Future.delayed(const Duration(seconds: 2));
     emit(AllExixutiveDetailsState());
+  }
+
+  FutureOr<void> adminTabChanger(
+      AdminTabChanger event, Emitter<AdminState> emit) {
+    emit(AdminTabChangerState());
+  }
+
+  FutureOr<void> filterDatas(
+      FilterDatas event, Emitter<AdminState> emit) async {
+    final details = datafilter(event.details, event.datetime);
+    emit(FilterDatasState(details: details));
+  }
+
+  FutureOr<void> clearDetails(ClearDetails event, Emitter<AdminState> emit) {
+    emit(ClearDetailsState());
   }
 }

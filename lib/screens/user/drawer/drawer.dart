@@ -1,5 +1,8 @@
+import 'package:detail_dex/screens/user/about/about.dart';
 import 'package:detail_dex/screens/user/drawer/functions.dart';
+import 'package:detail_dex/screens/user/privacy_policy/privacy_policy.dart';
 import 'package:detail_dex/screens/user/splash/splash.dart';
+import 'package:detail_dex/screens/user/terms_condition/terms_and_condition.dart';
 import 'package:flutter/material.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -88,7 +91,11 @@ class DrawerWidget extends StatelessWidget {
                             height: size.height / 15,
                             width: size.width / 1.5,
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (ctx) =>
+                                        const TermsAndConditions()));
+                              },
                               child: Row(
                                 children: [
                                   Padding(
@@ -111,7 +118,10 @@ class DrawerWidget extends StatelessWidget {
                             height: size.height / 15,
                             width: size.width / 1.5,
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (ctx) => const PrivacyPolicy()));
+                              },
                               child: Row(
                                 children: [
                                   Padding(
@@ -134,7 +144,10 @@ class DrawerWidget extends StatelessWidget {
                             height: size.height / 15,
                             width: size.width / 1.5,
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (ctx) => const About()));
+                              },
                               child: Row(
                                 children: [
                                   Padding(

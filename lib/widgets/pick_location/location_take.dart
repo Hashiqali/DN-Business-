@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:connectivity/connectivity.dart';
 import 'package:detail_dex/screens/user/add_details/functions.dart';
 import 'package:detail_dex/screens/user/bloc/details_bloc.dart';
@@ -8,64 +6,114 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:location_picker_flutter_map/location_picker_flutter_map.dart';
-import 'package:location_plus/location_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Location extends StatelessWidget {
-  const Location({super.key, required this.bloc, required this.latlng});
+class Location extends StatefulWidget {
+  const Location({
+    super.key,
+    required this.bloc,
+  });
   final DetailsBloc bloc;
-  final LatLong latlng;
+
+  @override
+  State<Location> createState() => _LocationState();
+}
+
+class _LocationState extends State<Location> {
+  late Future<LatLong> _locationFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _locationFuture = _currentLocationTake();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
-        backgroundColor: Colors.black,
-        body: FlutterLocationPicker(
-          selectLocationButtonStyle: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.blue),
-          ),
-          selectedLocationButtonTextstyle: const TextStyle(fontSize: 18),
-          selectLocationButtonText: 'Set Current Location',
-          selectLocationButtonLeadingIcon: const Icon(Icons.check),
-          initZoom: 11,
-          minZoomLevel: 5,
-          maxZoomLevel: 16,
-          trackMyPosition: false,
-          onError: (e) => print(e),
-          onPicked: (pickedData) {
-            final data = {
-              'lat': pickedData.latLong.latitude,
-              'long': pickedData.latLong.longitude
-            };
-            location = data;
-            address = pickedData.addressData;
-            bloc.add(LocationBuilder());
-            Navigator.pop(context);
-          },
-        )
+      backgroundColor: Colors.black,
+      body: FutureBuilder<LatLong>(
+        future: _locationFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Colors.white,
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                'Error: ${snapshot.error}',
+                style: const TextStyle(color: Colors.white),
+              ),
+            );
+          } else if (snapshot.hasData) {
+            return FlutterLocationPicker(
+              loadingWidget: const CircularProgressIndicator(
+                color: Colors.black,
+              ),
+              initPosition: snapshot.data!,
+              locationButtonsColor: Colors.white,
+              locationButtonBackgroundColor: Colors.black,
+              zoomButtonsBackgroundColor: Colors.black,
+              zoomButtonsColor: Colors.white,
+              mapLoadingBackgroundColor: Colors.black,
+              trackMyPosition: false,
+              selectLocationButtonStyle: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.black),
+              ),
+              selectedLocationButtonTextstyle: const TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+                fontFamily: 'dex1',
+              ),
+              selectLocationButtonText: 'Pick Location',
+              initZoom: 11,
+              minZoomLevel: 5,
+              maxZoomLevel: 16,
+              markerIcon: Icon(
+                Icons.location_on,
+                size: size.width / 9,
+                color: const Color.fromARGB(255, 255, 0, 0),
+              ),
+              onPicked: (pickedData) {
+                final data = {
+                  'lat': pickedData.latLong.latitude,
+                  'long': pickedData.latLong.longitude,
+                };
+                location = data;
+                address = pickedData.addressData;
+                widget.bloc.add(LocationBuilder());
+                Navigator.pop(context);
+              },
+            );
+          } else {
+            return const Center(
+              child: Text(
+                'Failed to get location',
+                style: TextStyle(color: Colors.white),
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
 
-        // OpenStreetMapSearchAndPick(
-        //     buttonWidth: 130,
-        //     zoomInIcon: Icons.zoom_in_sharp,
-        //     zoomOutIcon: Icons.zoom_out,
-        //     locationPinIconColor: const Color.fromARGB(255, 255, 0, 0),
-        //     locationPinTextStyle: const TextStyle(
-        //         color: Colors.black, fontSize: 12, fontFamily: 'dex1'),
-        //     buttonColor: Colors.black,
-        //     buttonText: 'Pick Location',
-        //     buttonTextStyle: const TextStyle(
-        //         color: Colors.white, fontSize: 12, fontFamily: 'dex1'),
-        //     onPicked: (pickedData) {
-        //       final data = {
-        //         'lat': pickedData.latLong.latitude,
-        //         'long': pickedData.latLong.longitude
-        //       };
-        //       location = data;
-        //       address = pickedData.address;
-        //       bloc.add(LocationBuilder());
-        //       Navigator.pop(context);
-        //     })
-        );
+  Future<LatLong> _currentLocationTake() async {
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.low,
+      forceAndroidLocationManager: true,
+    );
+    return LatLong(position.latitude, position.longitude);
   }
 }
 
@@ -81,33 +129,10 @@ void checkLocationPermission(
     PermissionStatus locationStatus = await Permission.location.request();
     if (locationStatus.isGranted) {
       openGoogleMaps(lat, lng);
-    } else if (locationStatus.isDenied) {
-    } else if (locationStatus.isPermanentlyDenied) {
+    } else if (locationStatus.isDenied || locationStatus.isPermanentlyDenied) {
       openAppSettings();
     }
   }
-}
-
-Future<LatLong> getLocation() async {
-  LatLong result = const LatLong(12, 3);
-  print('heyyyyyy');
-  // var position = await LocationPlus.getCurrentLocation();
-  // double _latitude = double.parse(position['latitude']);
-  // double _longitude = double.parse(position['longitude']);
-
-  LocationPermission permission = await Geolocator.checkPermission();
-
-  permission = await Geolocator.requestPermission();
-  if (permission == LocationPermission.whileInUse) {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    print('poaition==  ${position.latitude} ');
-  }
-
-  // print(' lat  $_latitude ,long $_longitude');
-  // result = LatLong(position.latitude, position.longitude);
-
-  return result;
 }
 
 TileLayer get openmap => TileLayer(

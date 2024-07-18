@@ -14,7 +14,7 @@ Stream<List<Map<String, dynamic>>> getDetails() async* {
     await for (final messages in messagesSnapshot) {
       final messagesList = messages.docs.map((e) {
         Map<String, dynamic> data = e.data();
-        data['id'] = e.id; // Add document ID to the data map
+        data['id'] = e.id; 
         return data;
       }).toList();
 

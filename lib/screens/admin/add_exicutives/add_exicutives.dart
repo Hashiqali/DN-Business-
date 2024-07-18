@@ -87,7 +87,7 @@ class _AddExicutivesPageState extends State<AddExicutivesPage> {
                   decoration: InputDecoration(
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white)),
-                      labelText: 'Exicutive Name',
+                      labelText: 'Executive Name',
                       labelStyle: TextStyle(
                         fontFamily: 'dex1',
                         color: Colors.white,
@@ -132,7 +132,7 @@ class _AddExicutivesPageState extends State<AddExicutivesPage> {
                   decoration: InputDecoration(
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white)),
-                      labelText: 'Exicutive Mobile Number',
+                      labelText: 'Executive Mobile Number',
                       labelStyle: TextStyle(
                         fontFamily: 'dex1',
                         color: Colors.white,

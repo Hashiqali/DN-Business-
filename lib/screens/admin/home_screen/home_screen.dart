@@ -1,4 +1,5 @@
 import 'package:detail_dex/screens/admin/add_exicutives/add_exicutives.dart';
+import 'package:detail_dex/screens/admin/home_screen/functions.dart';
 import 'package:detail_dex/screens/admin/list_exicutives/list_exicutives.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,9 @@ class HomeScreenAdmin extends StatelessWidget {
       backgroundColor: Colors.black,
       appBar: AppBar(
         leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              alertadminLogout(context: context, size: size);
+            },
             icon: const Icon(
               Icons.logout_outlined,
               color: Colors.white,
@@ -59,14 +62,25 @@ class HomeScreenAdmin extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Text(
-                          '10',
-                          style: TextStyle(
-                            fontFamily: 'dex2',
-                            color: Colors.white,
-                            fontSize: size.width / 10,
-                          ),
-                        ),
+                        StreamBuilder(
+                            stream: countTodayClients(),
+                            builder: (context, snapshot) {
+                              int count = 0;
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                count = 0;
+                              } else {
+                                count = snapshot.data ?? 0;
+                              }
+                              return Text(
+                                '$count',
+                                style: TextStyle(
+                                  fontFamily: 'dex2',
+                                  color: Colors.white,
+                                  fontSize: size.width / 10,
+                                ),
+                              );
+                            }),
                         SizedBox(
                           height: size.width / 30,
                         )
@@ -96,14 +110,25 @@ class HomeScreenAdmin extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Text(
-                          '10',
-                          style: TextStyle(
-                            fontFamily: 'dex2',
-                            color: Colors.white,
-                            fontSize: size.width / 10,
-                          ),
-                        ),
+                        StreamBuilder(
+                            stream: countTotalClients(),
+                            builder: (context, snapshot) {
+                              int count = 0;
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                count = 0;
+                              } else {
+                                count = snapshot.data ?? 0;
+                              }
+                              return Text(
+                                '$count',
+                                style: TextStyle(
+                                  fontFamily: 'dex2',
+                                  color: Colors.white,
+                                  fontSize: size.width / 10,
+                                ),
+                              );
+                            }),
                         SizedBox(
                           height: size.width / 30,
                         )
@@ -154,7 +179,7 @@ class HomeScreenAdmin extends StatelessWidget {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (ctx) => AddExicutivesPage(
                           isedit: false,
-                          data: {},
+                          data: const {},
                         )));
               },
               child: Container(

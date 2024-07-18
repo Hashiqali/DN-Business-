@@ -1,7 +1,6 @@
 import 'package:detail_dex/screens/user/bloc/details_bloc.dart';
 import 'package:detail_dex/screens/login_screen/functions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatelessWidget {

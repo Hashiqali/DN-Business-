@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     on<LoadingWidgetEvent>(loadingWidgetEvent);
     on<NoNetwoekEvent>(noNetwoekEvent);
     on<LoginLoadingEvent>(loginLoadingEvent);
+    on<FilteredDetails>(filteredDetails);
   }
 
   FutureOr<void> locationBuilder(
@@ -56,5 +58,11 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     emit(LoginLoadingEventState(istrue: true));
     await Future.delayed(const Duration(seconds: 2));
     emit(LoginLoadingEventState(istrue: false));
+  }
+
+  FutureOr<void> filteredDetails(
+      FilteredDetails event, Emitter<DetailsState> emit) {
+    print(event.details);
+    emit(FilteredDetailsState(details: event.details));
   }
 }

@@ -1,10 +1,8 @@
 import 'package:detail_dex/screens/user/add_details/functions.dart';
 import 'package:detail_dex/screens/user/bloc/details_bloc.dart';
-import 'package:detail_dex/widgets/pick_location/location_take.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class AddDetails extends StatefulWidget {
   const AddDetails({super.key, required this.isedit, required this.editdata});

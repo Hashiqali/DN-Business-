@@ -4,9 +4,7 @@ import 'package:detail_dex/screens/user/splash/splash.dart';
 import 'package:detail_dex/widgets/pick_location/location_take.dart';
 import 'package:detail_dex/widgets/snackbar_widget/snackbar.dart';
 import 'package:flutter/material.dart';
-import 'package:latlong2/latlong.dart';
-import 'package:location_picker_flutter_map/location_picker_flutter_map.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:geolocator/geolocator.dart';
 
 final CollectionReference firedata =
     FirebaseFirestore.instance.collection('Details');
@@ -64,17 +62,32 @@ submit(
   }
 }
 
-locationPick({required BuildContext context, required bloc}) async {
-  PermissionStatus locationStatus = await Permission.location.request();
-  if (locationStatus.isGranted) {
-    final latlong = await getLocation();
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (ctx) => Location(
-              latlng: LatLong(34, 42),
-              bloc: bloc,
-            )));
-  } else if (locationStatus.isDenied) {
-  } else if (locationStatus.isPermanentlyDenied) {
-    openAppSettings();
+Future<void> locationPick({
+  required BuildContext context,
+  required DetailsBloc bloc,
+}) async {
+  bool serviceEnabled;
+  LocationPermission permission;
+  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    await Geolocator.openLocationSettings();
+    return Future.error('Location services are disabled.');
   }
+
+  permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      return Future.error('Location permissions are denied');
+    }
+  }
+
+  if (permission == LocationPermission.deniedForever) {
+    return Future.error(
+        'Location permissions are permanently denied, we cannot request permissions.');
+  }
+  Navigator.of(context).push(MaterialPageRoute(
+      builder: (ctx) => Location(
+            bloc: bloc,
+          )));
 }

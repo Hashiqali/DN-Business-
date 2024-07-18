@@ -1,10 +1,14 @@
 import 'package:detail_dex/screens/user/bloc/details_bloc.dart';
+import 'package:detail_dex/screens/user/splash/splash.dart';
+
 import 'package:detail_dex/screens/user/view_details/view_details.dart';
 import 'package:detail_dex/widgets/bottom_sheet/bottom_sheet.dart';
 import 'package:detail_dex/screens/user/search/search.dart';
 import 'package:detail_dex/widgets/pick_location/location_take.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_geojson/flutter_map_geojson.dart';
 import 'package:latlong2/latlong.dart';
 
 listTile(
@@ -13,6 +17,9 @@ listTile(
     required BuildContext context,
     required DetailsBloc bloc,
     required bool issearch}) {
+  // initiate parser
+  GeoJsonParser myGeoJson = GeoJsonParser();
+
   return GestureDetector(
     onTap: () {
       if (focusNodeSearch.hasFocus) {
@@ -39,25 +46,37 @@ listTile(
                           bottomLeft: Radius.circular(10))),
                   width: size.width / 2.8,
                   child: ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        bottomLeft: Radius.circular(10)),
-                    child: FlutterMap(
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          bottomLeft: Radius.circular(10)),
+                      child: FlutterMap(
+                        mapController: MapController(),
                         options: MapOptions(
-                            onTap: (tapPosition, point) {
-                              if (focusNodeSearch.hasFocus) {
-                                focusNodeSearch.unfocus();
-                              }
-                              checkLocationPermission(data['location']['lat'],
-                                  data['location']['long'], context);
-                            },
-                            initialZoom: 14.5,
-                            initialCenter: LatLng(data['location']['lat'],
-                                data['location']['long']),
-                            interactionOptions: const InteractionOptions(
-                                flags: ~InteractiveFlag.doubleTapDragZoom)),
+                          onTap: (tapPosition, point) {
+                            if (focusNodeSearch.hasFocus) {
+                              focusNodeSearch.unfocus();
+                            }
+                            checkLocationPermission(data['location']['lat'],
+                                data['location']['long'], context);
+                          },
+                          initialCenter: LatLng(data['location']['lat'],
+                              data['location']['long']),
+                          center: LatLng(data['location']['lat'],
+                              data['location']['long']),
+                          zoom: 10,
+                          initialZoom: 14.5,
+                          interactionOptions: const InteractionOptions(
+                            flags: InteractiveFlag.none,
+                          ),
+                        ),
                         children: [
-                          openmap,
+                          TileLayer(
+                              urlTemplate:
+                                  "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                              subdomains: const ['a', 'b', 'c']),
+                          PolygonLayer(polygons: myGeoJson.polygons),
+                          PolylineLayer(polylines: myGeoJson.polylines),
+                          MarkerLayer(markers: myGeoJson.markers),
                           MarkerLayer(markers: [
                             Marker(
                                 point: LatLng(data['location']['lat'],
@@ -69,8 +88,46 @@ listTile(
                                   color: const Color.fromARGB(255, 255, 0, 0),
                                 ))
                           ])
-                        ]),
-                  ),
+                        ],
+                      )
+
+                      // FlutterMap(
+                      //     options: MapOptions(
+                      //       zoom: 10,
+                      //       onTap: (tapPosition, point) {
+                      //         if (focusNodeSearch.hasFocus) {
+                      //           focusNodeSearch.unfocus();
+                      //         }
+                      //         checkLocationPermission(data['location']['lat'],
+                      //             data['location']['long'], context);
+                      //       },
+                      //       initialZoom: 14.5,
+                      //       initialCenter: LatLng(data['location']['lat'],
+                      //           data['location']['long']),
+                      //       interactionOptions: const InteractionOptions(
+                      //         flags: InteractiveFlag.none,
+                      //       ),
+                      //     ),
+                      //     children: [
+                      //       TileLayer(
+                      //         urlTemplate:
+                      //             'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      //         userAgentPackageName: 'com.slashi.detail_dex',
+
+                      //       ),
+                      //       MarkerLayer(markers: [
+                      //         Marker(
+                      //             point: LatLng(data['location']['lat'],
+                      //                 data['location']['long']),
+                      //             alignment: Alignment.center,
+                      //             child: Icon(
+                      //               Icons.location_on,
+                      //               size: size.width / 12,
+                      //               color: const Color.fromARGB(255, 255, 0, 0),
+                      //             ))
+                      //       ])
+                      //     ]),
+                      ),
                 ),
                 Expanded(
                   child: Column(
@@ -118,7 +175,8 @@ listTile(
                     ],
                   ),
                 ),
-                if (!issearch)
+                if (data['exicutiveid'] == exicutiveId)
+                
                   Padding(
                     padding: EdgeInsets.only(right: size.width / 100),
                     child: IconButton(
